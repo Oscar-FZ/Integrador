@@ -8,9 +8,9 @@ def BotonMenuPrincipal(opcion):
     elif opcion == 2:
         create_submenu()
     elif opcion == 3: 
-        messagebox.showinfo("Llamando asistente", "Llamando Asistente")
+       create_custom_messagebox("Llamando Asistente", "Llamando Asistente", False)
     elif opcion == 4: 
-        messagebox.showinfo("Llamado de emergencia", "Llamando por emergencia")
+        create_custom_messagebox("Llamado de emergencia", "Llamando por emergencia", True)
 def BotonMenuSecundario(opcion,submenu_frame):
     if opcion==1:
         print("Encenciendo Televisor")
@@ -19,7 +19,7 @@ def BotonMenuSecundario(opcion,submenu_frame):
     elif opcion ==3:
         menuprincipal(submenu_frame)
     elif opcion==4:
-        messagebox.showinfo("Llamado de emergencia", "Llamando por emergencia")    
+        create_custom_messagebox("Llamado de emergencia", "Llamando por emergencia", True)    
 def create_submenu():
     # Oculto el menu principal
     main_frame.pack_forget()
@@ -37,10 +37,10 @@ def create_submenu():
     submenu_button_texts = ["Televisor", "Ventilador", "Atrás", "Emergencia"]
 
     # Defino colores
-    submenu_colors = ["#FFCCCC", "#CCFFCC", "#CCCCFF", "#FFFFCC"]
+    submenu_colors = ["#FFFFCC", "#CCFFCC", "#CCCCFF", "#FFCCCC"]
 
     # Cargo imagenes
-    submenu_image_paths = ["Image1.png", "Image1.png", "Image1.png", "Image1.png"]
+    submenu_image_paths = ["TELE.png", "FAN.png", "back.png", "AMBULANCIA - icons chaves-05.png"]
     submenu_images = [tk.PhotoImage(file=image_path) for image_path in submenu_image_paths]
 
     # Creo los botones del submenu en sí
@@ -58,7 +58,43 @@ def menuprincipal(submenu_frame):
     # Vuelvo al menu principal
     submenu_frame.pack_forget()
     main_frame.pack(fill="both", expand=True)
-
+def create_custom_messagebox(title, message, red_blink = False):
+    #Nuevo top level
+    custom_box = tk.Toplevel(root)
+    custom_box.title(title)
+    
+    # Tamaño
+    custom_box.geometry("400x200")  # Width x Height
+    message_font = tkfont.Font(size=32)
+    # Mensaje
+    message_label = tk.Label(custom_box, text=message, wraplength=350, font=message_font)
+    message_label.pack(pady=20)
+    if red_blink:
+        # Function to toggle the text color
+        def toggle_color():
+            current_color = message_label.cget("foreground")
+            next_color = "red" if current_color == "black" else "black"
+            message_label.config(foreground=next_color)
+            custom_box.after(500, toggle_color)  # Toggle every 500ms
+        
+        # Start the blinking effect
+        toggle_color()
+    # Ok
+    ok_button = tk.Button(custom_box, text="OK", command=custom_box.destroy)
+    ok_button.pack(pady=10)
+    
+    # Centrar el messagebox
+    custom_box.update_idletasks()
+    width = custom_box.winfo_width()
+    height = custom_box.winfo_height()
+    x = (custom_box.winfo_screenwidth() // 2) - (width // 2)
+    y = (custom_box.winfo_screenheight() // 2) - (height // 2)
+    custom_box.geometry(f'{width}x{height}+{x}+{y}')
+    
+    # Crear la nueva ventana
+    custom_box.transient(root)
+    custom_box.grab_set()
+    root.wait_window(custom_box)
 root = tk.Tk()
 root.title("Prueba base")
 
@@ -76,10 +112,10 @@ main_frame.pack(fill="both", expand=True)
 button_texts = ["Luces", "Electrodomesticos", "Llamada", "Emergencia"]
 
 # Defino colores
-colors = ["#FFCCCC", "#CCFFCC", "#CCCCFF", "#FFFFCC"]
+colors = ["#FFFFCC", "#CCFFCC", "#CCCCFF", "#FFCCCC"]
 
 
-image_paths = ["Luces.png", "Control.png", "Llamada.png", "Emergencia1.png"]
+image_paths = ["BOMBILLO - icons chaves-01.png", "CONTROL - icons chaves-02.png", "TELEFONO.png", "AMBULANCIA - icons chaves-05.png"]
 images = [tk.PhotoImage(file=image_path) for image_path in image_paths]
 
 # Creo botones
