@@ -1,20 +1,37 @@
-import socket
-import struct
-import time
+#import socket
+#import struct
+#import time
+#
+#envio_str = 'Hola Mun2!'
+#
+##TCP_IP = '192.168.1.40'
+#TCP_IP = '172.21.255.137'
+#TCP_PORT = 10000
+#
+#while(envio_str != 'exit'):
+#    envio_str = str(input("Escriba el mensaje que quiera mandar: "))
+#    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#    s.connect((TCP_IP, TCP_PORT))
+#    s.send(envio_str.encode())
+#    time.sleep(1)
+#    s.close()
 
-envio_str = 'Hola Mun2!'
 
-#TCP_IP = '192.168.1.40'
-TCP_IP = '172.21.255.137'
-TCP_PORT = 10000
 
-while(envio_str != 'exit'):
-    envio_str = str(input("Escriba el mensaje que quiera mandar: "))
+def init ():
+    TCP_IP = '172.21.255.137'
+    TCP_PORT = 10000
+    return TCP_IP, TCP_PORT
+
+def send_message(string, TCP_IP, TCP_PORT):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((TCP_IP, TCP_PORT))
-    s.send(envio_str.encode())
-    time.sleep(1)
+    s.send(string.encode())
+    #time.sleep(1)
     s.close()
+
+
+
 
 
 ######################################################################
