@@ -40,7 +40,7 @@ def create_submenu():
     submenu_colors = ["#FFFFCC", "#CCFFCC", "#CCCCFF", "#FFCCCC"]
 
     # Cargo imagenes
-    submenu_image_paths = ["TELE.png", "FAN.png", "back.png", "AMBULANCIA - icons chaves-05.png"]
+    submenu_image_paths = ["televisor.png", "ventilador.png", "back.png", "corazon.png"]
     submenu_images = [tk.PhotoImage(file=image_path) for image_path in submenu_image_paths]
 
     # Creo los botones del submenu en sí
@@ -115,7 +115,7 @@ button_texts = ["Luces", "Electrodomesticos", "Llamada", "Emergencia"]
 colors = ["#FFFFCC", "#CCFFCC", "#CCCCFF", "#FFCCCC"]
 
 
-image_paths = ["BOMBILLO - icons chaves-01.png", "CONTROL - icons chaves-02.png", "TELEFONO.png", "AMBULANCIA - icons chaves-05.png"]
+image_paths = ["BOMBILLO - icons chaves-01.png", "control_remote.png", "telephone.png", "corazon.png"]
 images = [tk.PhotoImage(file=image_path) for image_path in image_paths]
 
 # Creo botones
