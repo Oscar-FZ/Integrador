@@ -3,22 +3,19 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/queue.h>
+#include <typeinfo>
 
 
 TaskHandle_t RECEIVERWIFI;
 TaskHandle_t MENU;
-TaskHandle_t LIGHTS;
-TaskHandle_t APPLIANCES;
-TaskHandle_t CALL;
-TaskHandle_t EMERGENCY;
 
 xQueueHandle options;
 
-const char* ssid = "Familia _FZ_2.4";
-const char* password = "gu6122411";
+const char* ssid = "estudiantes.ie";
+const char* password = "Estudiantes2024";
 
-String strs[20]; //si algo falla eso era strs[20]
-String menu_strs[20];
+char* strs[20]; //si algo falla eso era strs[20]
+char* menu_strs[20];
 int StringCount = 0;
 
 boolean alreadyConnected = false;  // whether or not the client was connected previously
@@ -73,14 +70,14 @@ void receiverWiFi(void *parameter) {
       }
 
       int length;
-      String value;
+      char value;
 
       if ((length = client.available()) > 0) {
         Serial.println("Received length: " + String(length));
-        value = client.readString();
+        value = client.read();
         xQueueSend(options, (void *) &value, (TickType_t) 10);
-        Serial.println("[PRINT] " + value);
-        Serial.println("[PRINT] Length: " + String(value.length()));  
+        Serial.println("[PRINT] " + String(value));
+        //Serial.println("[PRINT] Length: " + String(value.length()));  
       }
     }
   }
@@ -88,7 +85,7 @@ void receiverWiFi(void *parameter) {
 
 
 void menu(void *parameter) {
-  String menu_strs;
+  char menu_strs;
   while (1) {
     while (xQueueReceive(options, &(menu_strs), (TickType_t) 1) != pdPASS) {
       digitalWrite(18, LOW);
@@ -96,26 +93,27 @@ void menu(void *parameter) {
       digitalWrite(33, LOW);
       digitalWrite(25, LOW);
     }
-    Serial.println("[PRINT] Dato recibido" + menu_strs);
-    if (menu_strs == "a") {
+    Serial.println("[PRINT] Dato recibido");
+    //Serial.println(typeid(menu_strs).name());
+    if (String(menu_strs) == "a") {
       Serial.println("[PRINT] A");
       digitalWrite(18, HIGH);
       delay(1000);
     }
 
-    else if (menu_strs == "b") {
+    else if (String(menu_strs)== "b") {
       Serial.println("[PRINT] B");
       digitalWrite(32, HIGH);
       delay(1000);
     }
 
-    else if (menu_strs == "c") {
+    else if (String(menu_strs) == "c") {
       Serial.println("[PRINT] C");
       digitalWrite(33, HIGH);
       delay(1000);
     }
 
-    else if (menu_strs == "d") {
+    else if (String(menu_strs) == "d") {
       Serial.println("[PRINT] D");
       digitalWrite(25, HIGH);
       delay(1000);
@@ -132,7 +130,7 @@ void setup() {
   connectWiFi();
 
   xTaskCreatePinnedToCore(receiverWiFi, "RECEIVERWIFI", 5000, NULL, 1, &RECEIVERWIFI, 1);
-  xTaskCreatePinnedToCore(menu, "MENU", 5000, NULL, 1, &MENU, 0);
+  xTaskCreatePinnedToCore(menu, "MENU", 5000, NULL, 2, &MENU, 0);
 
   pinMode(18, OUTPUT); // 
   pinMode(32, OUTPUT); // 
